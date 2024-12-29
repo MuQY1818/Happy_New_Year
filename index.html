@@ -21,6 +21,8 @@
             font-size: 2em;
             text-align: center;
             animation: fadeIn 3s ease-in;
+            margin-top: 20vh;
+            transition: opacity 0.5s ease;
         }
 
         .poem-line {
@@ -28,7 +30,9 @@
             animation: fadeInUp 1s ease-out forwards;
             margin: 15px 0;
             text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
-            transition: all 0.3s ease;
+            transition: all 0.5s ease;
+            font-size: 1.2em;
+            letter-spacing: 2px;
         }
 
         .poem-line:hover {
@@ -38,11 +42,47 @@
 
         .heart {
             display: block;
-            margin: 20px 0;
-            font-size: 1.5em;
+            margin: 30px 0;
+            font-size: 2em;
             text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
             animation: heartbeat 1.5s infinite ease-in-out;
             color: #ff4d4d;
+            position: relative;
+            width: 1em;
+            margin-left: auto;
+            margin-right: auto;
+            transition: opacity 0.5s ease;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: '❤';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.2;
+            animation: heart-echo 1.5s infinite ease-out;
+            pointer-events: none;
+        }
+
+        .heart::before {
+            animation-delay: 0.2s;
+        }
+
+        .heart::after {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes heart-echo {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.2;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0;
+            }
         }
 
         @keyframes fadeIn {
@@ -230,15 +270,17 @@
 
         @keyframes floatEmoji {
             0% {
-                transform: translateY(100vh) rotate(0deg) scale(0.5);
+                transform: translateY(100vh) rotate(0deg) scale(0.8);
+                opacity: 0;
+            }
+            10% {
                 opacity: 0.8;
             }
-            50% {
-                transform: translateY(50vh) rotate(180deg) scale(1.2);
-                opacity: 0.9;
+            90% {
+                opacity: 0.8;
             }
             100% {
-                transform: translateY(-100px) rotate(360deg) scale(0.5);
+                transform: translateY(-50px) rotate(360deg) scale(0.4);
                 opacity: 0;
             }
         }
@@ -258,6 +300,111 @@
             backdrop-filter: blur(8px);
             animation: fadeIn 1s ease-out;
             z-index: 1000;
+        }
+
+        .petal {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1;
+            animation: falling 10s linear infinite;
+            color: #ff69b4;
+            opacity: 0.7;
+            text-shadow: 0 0 5px rgba(255, 105, 180, 0.5);
+        }
+
+        @keyframes falling {
+            0% {
+                transform: translate(var(--startX), -10%) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translate(var(--endX), 110%) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .snake {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .snake-segment {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #fff, var(--color));
+            box-shadow: 0 0 20px var(--color);
+            opacity: 0.9;
+            will-change: transform;
+            transform: translate(-50%, -50%);
+        }
+
+        
+        .rainbow {
+            position: fixed;
+            left: 50%;
+            bottom: -30vh;
+            transform: translateX(-50%);
+            width: 200vw;
+            height: 200vh;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.15;
+            background: 
+                radial-gradient(
+                    ellipse at 50% 100%,
+                    transparent 40%,
+                    #ff0000 41%, #ff0000 43%,
+                    #ff8800 44%, #ff8800 46%,
+                    #ffff00 47%, #ffff00 49%,
+                    #00ff00 50%, #00ff00 52%,
+                    #00ffff 53%, #00ffff 55%,
+                    #0088ff 56%, #0088ff 58%,
+                    #8800ff 59%, #8800ff 61%,
+                    transparent 62%
+                );
+            filter: blur(5px);
+            animation: rainbow-pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes rainbow-pulse {
+            0%, 100% { opacity: 0.12; }
+            50% { opacity: 0.18; }
+        }
+
+        .secret-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3em;
+            color: #fff;
+            text-shadow: 0 0 10px #ff0000;
+            z-index: 10000;
+            opacity: 0;
+            transition: all 2s ease;
+            font-family: "楷体", KaiTi, "华文楷体", STKaiti, serif;
+        }
+
+        .secret-message .heart {
+            display: inline-block;
+            animation: secretHeart 1.5s infinite;
+            color: #ff4d4d;
+            filter: drop-shadow(0 0 15px rgba(255,0,0,0.8));
+        }
+
+        @keyframes secretHeart {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
         }
     </style>
 </head>
@@ -300,7 +447,7 @@
             setTimeout(() => snow.remove(), duration * 1000);
         }
 
-        setInterval(createSnow, 300);
+        setInterval(createSnow, 500);
 
         // 添加粒子效果
         function createParticles() {
@@ -326,15 +473,20 @@
 
         createParticles();
 
-        // 鼠标跟随效果
+        // 修改鼠标轨迹效果，减少创建的DOM元素
+        let lastTrailTime = 0;
         document.addEventListener('mousemove', function(e) {
+            const now = Date.now();
+            if (now - lastTrailTime < 50) return; // 限制创建频率
+            lastTrailTime = now;
+            
             const trail = document.createElement('div');
             trail.className = 'mouse-trail';
             trail.style.left = e.pageX - 5 + 'px';
             trail.style.top = e.pageY - 5 + 'px';
             document.body.appendChild(trail);
             
-            setTimeout(() => trail.remove(), 1000);
+            setTimeout(() => trail.remove(), 500); // 减少持续时间
         });
 
         // 为"新年快乐"添加彩虹效果
@@ -401,14 +553,18 @@
             emoji.className = 'floating-emoji';
             emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
             
+            // 随机水平位置
             emoji.style.left = Math.random() * window.innerWidth + 'px';
-            emoji.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
+            // 随机大小
+            emoji.style.fontSize = Math.random() * 20 + 25 + 'px';
+            // 随机动画时间
+            emoji.style.animationDuration = Math.random() * 2 + 3 + 's';
             
             document.body.appendChild(emoji);
-            setTimeout(() => emoji.remove(), 4000);
+            setTimeout(() => emoji.remove(), 5000);
         }
 
-        // 定期创建表情
+        // 修改创建频率
         setInterval(createFloatingEmoji, 500);
 
         // 添加时钟功能
@@ -431,6 +587,277 @@
         }
 
         updateClock();
+
+        // 添加花瓣效果
+        function createPetal() {
+            const petals = ['🌸', '🌺', '🌹', '💮', '🏵️'];
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            petal.innerHTML = petals[Math.floor(Math.random() * petals.length)];
+            
+            const startX = Math.random() * window.innerWidth;
+            const drift = (Math.random() - 0.5) * 200;
+            petal.style.setProperty('--startX', startX + 'px');
+            petal.style.setProperty('--endX', (startX + drift) + 'px');
+            petal.style.left = startX + 'px';
+            petal.style.fontSize = Math.random() * 15 + 15 + 'px';
+            
+            document.body.appendChild(petal);
+            setTimeout(() => petal.remove(), 10000);
+        }
+
+        // 定期创建花瓣
+        setInterval(createPetal, 500);
+
+        // 在脚本部分添加蛇的逻辑
+        function createSnake() {
+            const snake = document.createElement('div');
+            snake.className = 'snake';
+            document.body.appendChild(snake);
+
+            const segments = [];
+            const segmentCount = 20;
+            const colors = [
+                '#ff3333', '#ff6633', '#ff9933', '#ffcc33', 
+                '#ffff33', '#99ff33', '#33ff33', '#33ff99', 
+                '#33ffff', '#3399ff', '#3333ff', '#9933ff'
+            ];
+
+            // 初始化在屏幕中央
+            const startX = window.innerWidth / 2;
+            const startY = window.innerHeight / 2;
+
+            // 创建蛇的段
+            for (let i = 0; i < segmentCount; i++) {
+                const segment = document.createElement('div');
+                segment.className = 'snake-segment';
+                segment.style.setProperty('--color', colors[i % colors.length]);
+                snake.appendChild(segment);
+                
+                segments.push({
+                    element: segment,
+                    x: startX,
+                    y: startY
+                });
+            }
+
+            let time = 0;
+
+            function updateSnake() {
+                time += 0.003;
+
+                // 计算中心点
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+
+                // 使用多个正弦波创造复杂的轨迹
+                const radius = Math.min(window.innerWidth, window.innerHeight) * 0.2;
+                const t1 = time * 0.7;  // 慢速旋转
+                const t2 = time * 2;    // 快速波动
+                const t3 = time * 0.3;  // 超慢速变化
+
+                // 组合多个运动
+                const x1 = Math.sin(t1) * radius * 0.8;
+                const y1 = Math.cos(t1) * radius * 0.8;
+                
+                const x2 = Math.sin(t2) * radius * 0.3;
+                const y2 = Math.cos(t2 * 1.5) * radius * 0.3;
+                
+                const x3 = Math.sin(t3) * radius * 0.2;
+                const y3 = Math.cos(t3 * 2) * radius * 0.2;
+
+                const targetX = centerX + x1 + x2 + x3;
+                const targetY = centerY + y1 + y2 + y3;
+
+                // 更新蛇的每个段
+                segments.forEach((segment, index) => {
+                    if (index === 0) {
+                        // 头部平滑追踪
+                        const dx = targetX - segment.x;
+                        const dy = targetY - segment.y;
+                        segment.x += dx * 0.08;
+                        segment.y += dy * 0.08;
+                    } else {
+                        const prevSegment = segments[index - 1];
+                        const dx = prevSegment.x - segment.x;
+                        const dy = prevSegment.y - segment.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        const idealDistance = 12;
+                        
+                        // 添加一些随机摆动
+                        const wiggle = Math.sin(time * 5 + index * 0.5) * 0.3;
+                        const angle = Math.atan2(dy, dx) + wiggle;
+                        
+                        // 弹性跟随
+                        const speed = 0.15 + Math.sin(time * 2 + index * 0.2) * 0.05;
+                        segment.x += dx * speed;
+                        segment.y += dy * speed;
+                    }
+
+                    // 更新视觉效果
+                    const scale = 1 - index * 0.02;
+                    const breathe = 1 + Math.sin(time * 3 + index * 0.2) * 0.05; // 添加呼吸效果
+                    segment.element.style.left = `${segment.x}px`;
+                    segment.element.style.top = `${segment.y}px`;
+                    segment.element.style.transform = `translate(-50%, -50%) scale(${scale * breathe})`;
+                    segment.element.style.opacity = 1 - (index / segmentCount) * 0.3;
+                });
+
+                requestAnimationFrame(updateSnake);
+            }
+
+            updateSnake();
+        }
+
+        // 创建蛇
+        createSnake();
+
+        // 创建彩虹
+        function createRainbow() {
+            const rainbow = document.createElement('div');
+            rainbow.className = 'rainbow';
+            document.body.appendChild(rainbow);
+        }
+
+        // 创建彩虹
+        createRainbow();
+
+        // 添加一个特殊的键盘组合触发彩蛋
+        let konami = '';
+        const konamiCode = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
+        
+        document.addEventListener('keydown', (e) => {
+            konami += e.key;
+            if (konami.length > konamiCode.length) {
+                konami = konami.substr(konami.length - konamiCode.length);
+            }
+            
+            if (konami === konamiCode) {
+                // 触发彩蛋效果
+                activateSecretMode();
+                konami = '';
+            }
+        });
+
+        // 修改彩蛋触发函数
+        function activateSecretMode() {
+            // 获取元素
+            const message = document.querySelector('.message');
+            const messages = document.querySelectorAll('.poem-line');
+            const heart = document.querySelector('.heart');
+            
+            // 淡出所有元素
+            message.style.opacity = '0';
+            
+            // 等待淡出完成后显示秘密消息
+            setTimeout(() => {
+                // 创建并显示秘密消息
+                const secret = document.createElement('div');
+                secret.className = 'secret-message';
+                secret.style.position = 'fixed';
+                secret.style.top = '50%';
+                secret.style.left = '50%';
+                secret.style.transform = 'translate(-50%, -50%) scale(0.8)';
+                secret.style.fontSize = '3em';
+                secret.style.color = '#fff';
+                secret.style.textShadow = '0 0 10px #ff0000';
+                secret.style.opacity = '0';
+                secret.style.transition = 'all 1s ease';
+                secret.style.zIndex = '10000';
+                
+                const text = document.createElement('span');
+                text.textContent = '我喜欢你 ';
+                
+                const heartIcon = document.createElement('span');
+                heartIcon.className = 'secret-heart';
+                heartIcon.textContent = '❤';
+                heartIcon.style.color = '#ff4d4d';
+                heartIcon.style.animation = 'heartbeat 1.5s infinite';
+                
+                secret.appendChild(text);
+                secret.appendChild(heartIcon);
+                document.body.appendChild(secret);
+                
+                // 显示秘密消息和特效
+                requestAnimationFrame(() => {
+                    secret.style.opacity = '1';
+                    secret.style.transform = 'translate(-50%, -50%) scale(1)';
+                    
+                    // 创建特效
+                    for (let i = 0; i < 12; i++) {
+                        setTimeout(() => {
+                            const angle = (i / 12) * Math.PI * 2;
+                            const distance = Math.min(window.innerWidth, window.innerHeight) * 0.2;
+                            const x = window.innerWidth / 2 + Math.cos(angle) * distance;
+                            const y = window.innerHeight / 2 + Math.sin(angle) * distance;
+                            createHeartFirework(x, y);
+                        }, i * 200);
+                    }
+
+                    for (let i = 0; i < 20; i++) {
+                        setTimeout(() => createFloatingHeart(), i * 100);
+                    }
+                });
+
+                // 3秒后淡出秘密消息并恢复原始内容
+                setTimeout(() => {
+                    secret.style.opacity = '0';
+                    secret.style.transform = 'translate(-50%, -50%) scale(0.8)';
+                    
+                    setTimeout(() => {
+                        secret.remove();
+                        message.style.opacity = '1';
+                    }, 1000);
+                }, 4000);
+            }, 500);
+        }
+
+        // 添加心形烟花效果
+        function createHeartFirework(x, y) {
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            firework.style.left = x + 'px';
+            firework.style.top = y + 'px';
+            
+            const colors = ['#ff69b4', '#ff1493', '#ff0000', '#ff4d4d'];
+            
+            for (let i = 0; i < 12; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'firework-particle';
+                particle.innerHTML = '❤';
+                particle.style.fontSize = '20px';
+                
+                const angle = (i / 12) * Math.PI * 2;
+                const distance = Math.random() * 60 + 40;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                
+                particle.style.setProperty('--tx', tx + 'px');
+                particle.style.setProperty('--ty', ty + 'px');
+                particle.style.color = colors[Math.floor(Math.random() * colors.length)];
+                
+                firework.appendChild(particle);
+            }
+            
+            document.body.appendChild(firework);
+            setTimeout(() => firework.remove(), 1500);
+        }
+
+        // 添加漂浮的心形效果
+        function createFloatingHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.innerHTML = '❤';
+            heart.style.position = 'fixed';
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.top = window.innerHeight + 'px';
+            heart.style.color = `hsl(${Math.random() * 30 + 340}, 100%, 60%)`;
+            heart.style.fontSize = Math.random() * 20 + 20 + 'px';
+            heart.style.animation = `floatUp ${Math.random() * 2 + 3}s ease-out forwards`;
+            
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
     </script>
 </body>
 </html>
