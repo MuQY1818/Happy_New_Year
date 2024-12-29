@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>新年祝福</title>
+    <style>
+        body {
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            font-family: "楷体", KaiTi, "华文楷体", STKaiti, serif;
+        }
+
+        .message {
+            color: #ff6b6b;
+            font-size: 2em;
+            text-align: center;
+            animation: fadeIn 3s ease-in;
+        }
+
+        .poem-line {
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+            margin: 15px 0;
+            text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .poem-line:hover {
+            transform: scale(1.05);
+            text-shadow: 0 0 20px rgba(255, 107, 107, 0.8);
+        }
+
+        .heart {
+            display: block;
+            margin: 20px 0;
+            font-size: 1.5em;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+            animation: heartbeat 1.5s infinite ease-in-out;
+            color: #ff4d4d;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes heartbeat {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fall {
+            from {
+                transform: translateY(-10px) rotate(0deg);
+            }
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 107, 107, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 3s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+            }
+            50% {
+                transform: translateY(-20px) translateX(10px);
+            }
+        }
+
+        .message > div:last-child {
+            margin-top: 20px;
+            animation: glow 2s infinite alternate;
+            font-weight: bold;
+            opacity: 0.8;
+            color: rgba(255, 77, 77, 0.9);
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 2px #fff, 0 0 4px #fff, 0 0 6px rgba(255, 77, 77, 0.7), 0 0 8px rgba(255, 77, 77, 0.5);
+            }
+            to {
+                text-shadow: 0 0 3px #fff, 0 0 5px #fff, 0 0 7px rgba(255, 77, 77, 0.7), 0 0 9px rgba(255, 77, 77, 0.5);
+            }
+        }
+
+        .rainbow-text {
+            background: linear-gradient(45deg, #ff4d4d, #ff9f1a, #ffff1a, #1aff1a, #1affff, #4d4dff, #ff4dff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: rainbow 8s linear infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        .mouse-trail {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: screen;
+            background: radial-gradient(circle, #ff4d4d 0%, transparent 70%);
+            animation: trail-fade 1s linear forwards;
+        }
+
+        @keyframes trail-fade {
+            from { transform: scale(1); opacity: 1; }
+            to { transform: scale(0); opacity: 0; }
+        }
+
+        .poem-line {
+            position: relative;
+            padding: 5px 15px;
+        }
+
+        .poem-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 107, 107, 0.1);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.5s ease;
+        }
+
+        .poem-line:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .firework {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .firework-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: explode 1.5s ease-out forwards;
+            box-shadow: 0 0 15px currentColor, 0 0 30px currentColor;
+            filter: blur(0.5px);
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(calc(var(--ty) * 0.5)) translateX(calc(var(--tx) * 0.5)) scale(1.2);
+            }
+            100% {
+                transform: translateY(var(--ty)) translateX(var(--tx)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .floating-emoji {
+            position: fixed;
+            font-size: 30px;
+            pointer-events: none;
+            z-index: 100;
+            animation: floatEmoji 4s linear forwards;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+        }
+
+        @keyframes floatEmoji {
+            0% {
+                transform: translateY(100vh) rotate(0deg) scale(0.5);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translateY(50vh) rotate(180deg) scale(1.2);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        
+        .clock {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 1.8em;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 0 15px rgba(255, 107, 107, 0.7);
+            font-family: "楷体", KaiTi, "华文楷体", STKaiti, serif;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 15px 25px;
+            border-radius: 25px;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 1s ease-out;
+            z-index: 1000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="particles"></div>
+    <div class="clock"></div>
+    <div class="message">
+        <div class="poem">
+            <div class="poem-line" style="animation-delay: 0.5s">新岁初启，春风暖怀</div>
+            <div class="poem-line" style="animation-delay: 1s">星光耀目，美好常随</div>
+            <div class="poem-line" style="animation-delay: 1.5s">四时安稳，梦伴长怀</div>
+            <div class="poem-line" style="animation-delay: 2s">心意托风，不语自欢</div>
+        </div>
+        <span class="heart">❤</span>
+        <div>新年快乐</div>
+    </div>
+
+    <script>
+        // 在脚本开始处添加变量声明
+        let autoFireworksTimeout;
+
+        // 添加飘落的雪花效果
+        function createSnow() {
+            const snow = document.createElement('div');
+            snow.style.position = 'fixed';
+            snow.style.top = '-10px';
+            snow.style.left = Math.random() * window.innerWidth + 'px';
+            snow.style.opacity = Math.random() * 0.8 + 0.2;
+            snow.style.fontSize = Math.random() * 10 + 10 + 'px';
+            snow.innerHTML = '❄';
+            snow.style.color = 'white';
+            snow.style.zIndex = '-1';
+            snow.style.pointerEvents = 'none';
+            
+            const duration = Math.random() * 3 + 2;
+            snow.style.animation = `fall ${duration}s linear`;
+            
+            document.body.appendChild(snow);
+            setTimeout(() => snow.remove(), duration * 1000);
+        }
+
+        setInterval(createSnow, 300);
+
+        // 添加粒子效果
+        function createParticles() {
+            const container = document.querySelector('.particles');
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 5 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 2 + 's';
+                particle.style.opacity = Math.random() * 0.5;
+                
+                container.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
+        // 鼠标跟随效果
+        document.addEventListener('mousemove', function(e) {
+            const trail = document.createElement('div');
+            trail.className = 'mouse-trail';
+            trail.style.left = e.pageX - 5 + 'px';
+            trail.style.top = e.pageY - 5 + 'px';
+            document.body.appendChild(trail);
+            
+            setTimeout(() => trail.remove(), 1000);
+        });
+
+        // 为"新年快乐"添加彩虹效果
+        document.querySelector('.message > div:last-child').classList.add('rainbow-text');
+
+        // 修改烟花相关代码
+        function createFirework(x, y) {
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            firework.style.left = x + 'px';
+            firework.style.top = y + 'px';
+
+            const particles = 50;  // 减少粒子数量
+            const colors = [
+                '#ff0000', // 红色
+                '#ffd700', // 金色
+                '#ff69b4', // 粉红
+                '#ff4500', // 橙红色
+                '#ff8c00'  // 深橙色
+            ];
+
+            for (let i = 0; i < particles; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'firework-particle';
+                
+                const angle = (i / particles) * 360 + Math.random() * 20;
+                const distance = Math.random() * 100 + 50;  // 减少扩散距离
+                const rad = angle * Math.PI / 180;
+                
+                const tx = Math.cos(rad) * distance;
+                const ty = Math.sin(rad) * distance;
+                
+                particle.style.setProperty('--tx', tx + 'px');
+                particle.style.setProperty('--ty', ty + 'px');
+                
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.backgroundColor = color;
+                particle.style.color = color;
+                
+                firework.appendChild(particle);
+            }
+
+            document.body.appendChild(firework);
+            setTimeout(() => firework.remove(), 1000);  // 减少动画时间
+        }
+
+        // 优化自动烟花的频率
+        function autoFireworks() {
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * (window.innerHeight * 0.6);
+            createFirework(x, y);
+            
+            autoFireworksTimeout = setTimeout(autoFireworks, Math.random() * 1000 + 500);  // 降低频率
+        }
+
+        // 启动自动烟花
+        setTimeout(autoFireworks, 1000);
+
+        // 在现有脚本后添加表情符号效果
+        const emojis = ['🎉', '✨', '🌟', '💫', '⭐', '🎊', '🎈', '🎆', '🎇', '🌸', '💝', '💖', '🏮', '🐉', '🍀'];
+        
+        function createFloatingEmoji() {
+            const emoji = document.createElement('div');
+            emoji.className = 'floating-emoji';
+            emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+            
+            emoji.style.left = Math.random() * window.innerWidth + 'px';
+            emoji.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
+            
+            document.body.appendChild(emoji);
+            setTimeout(() => emoji.remove(), 4000);
+        }
+
+        // 定期创建表情
+        setInterval(createFloatingEmoji, 500);
+
+        // 添加时钟功能
+        function updateClock() {
+            const clock = document.querySelector('.clock');
+            const now = new Date();
+            
+            const options = {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            };
+            
+            clock.textContent = now.toLocaleString('zh-CN', options).replace(/\//g, '-');
+            requestAnimationFrame(updateClock);
+        }
+
+        updateClock();
+    </script>
+</body>
+</html>
