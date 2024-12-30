@@ -1844,6 +1844,192 @@
 
         // 将新按钮添加到现有按钮组
         buttons.push(...additionalButtons);
+
+        // 修改蛇的运动效果
+        function createSnakeTrail(e) {
+            const snake = document.createElement('div');
+            snake.className = 'snake';
+            document.body.appendChild(snake);
+
+            const segments = [];
+            const segmentCount = 20;
+            const colors = ['#ff6b6b', '#ff4757', '#ff3f34'];
+            const baseSize = 15;
+
+            // 创建蛇的所有节段
+            for (let i = 0; i < segmentCount; i++) {
+                const segment = document.createElement('div');
+                segment.className = 'snake-segment';
+                
+                // 设置渐变大小和颜色
+                const size = baseSize * (1 - i / segmentCount * 0.7);
+                const colorIndex = Math.floor(i / (segmentCount / colors.length));
+                const color = colors[Math.min(colorIndex, colors.length - 1)];
+                
+                segment.style.cssText = `
+                    width: ${size}px;
+                    height: ${size}px;
+                    --color: ${color};
+                    opacity: ${1 - i / segmentCount * 0.7};
+                    filter: blur(${i / segmentCount * 2}px);
+                    position: absolute;
+                    border-radius: 50%;
+                    background: radial-gradient(circle at 30% 30%, #fff, var(--color));
+                    box-shadow: 0 0 20px var(--color);
+                `;
+
+                // 为第一个节段（头部）添加眼睛
+                if (i === 0) {
+                    // 左眼
+                    const leftEye = document.createElement('div');
+                    leftEye.style.cssText = `
+                        position: absolute;
+                        width: 6px;
+                        height: 6px;
+                        background: #000;
+                        border-radius: 50%;
+                        top: 20%;
+                        left: 20%;
+                        box-shadow: 
+                            0 0 4px #fff,
+                            0 0 8px rgba(255, 255, 255, 0.8);
+                        z-index: 2;
+                    `;
+
+                    // 左眼的白色部分
+                    const leftEyeLight = document.createElement('div');
+                    leftEyeLight.style.cssText = `
+                        position: absolute;
+                        width: 3px;
+                        height: 3px;
+                        background: #fff;
+                        border-radius: 50%;
+                        top: 15%;
+                        left: 15%;
+                    `;
+                    leftEye.appendChild(leftEyeLight);
+                    segment.appendChild(leftEye);
+
+                    // 右眼
+                    const rightEye = document.createElement('div');
+                    rightEye.style.cssText = `
+                        position: absolute;
+                        width: 6px;
+                        height: 6px;
+                        background: #000;
+                        border-radius: 50%;
+                        top: 20%;
+                        right: 20%;
+                        box-shadow: 
+                            0 0 4px #fff,
+                            0 0 8px rgba(255, 255, 255, 0.8);
+                        z-index: 2;
+                    `;
+
+                    // 右眼的白色部分
+                    const rightEyeLight = document.createElement('div');
+                    rightEyeLight.style.cssText = `
+                        position: absolute;
+                        width: 3px;
+                        height: 3px;
+                        background: #fff;
+                        border-radius: 50%;
+                        top: 15%;
+                        left: 15%;
+                    `;
+                    rightEye.appendChild(rightEyeLight);
+                    segment.appendChild(rightEye);
+                }
+                
+                snake.appendChild(segment);
+                segments.push({
+                    element: segment,
+                    x: e.clientX,
+                    y: e.clientY,
+                    targetX: e.clientX,
+                    targetY: e.clientY,
+                    eyes: i === 0 ? {
+                        left: leftEye,
+                        right: rightEye
+                    } : null
+                });
+            }
+
+            let prevTime = performance.now();
+            let isActive = true;
+
+            function animate(currentTime) {
+                if (!isActive) return;
+
+                const deltaTime = (currentTime - prevTime) / 1000;
+                prevTime = currentTime;
+
+                segments[0].targetX = e.clientX;
+                segments[0].targetY = e.clientY;
+
+                segments.forEach((segment, index) => {
+                    if (index === 0) {
+                        segment.x += (segment.targetX - segment.x) * 15 * deltaTime;
+                        segment.y += (segment.targetY - segment.y) * 15 * deltaTime;
+                        
+                        // 更新眼睛的朝向
+                        if (segment.eyes) {
+                            const dx = segment.targetX - segment.x;
+                            const dy = segment.targetY - segment.y;
+                            const angle = Math.atan2(dy, dx);
+                            const eyeOffset = 2;
+                            
+                            segment.eyes.left.style.transform = `translate(${Math.cos(angle) * eyeOffset}px, ${Math.sin(angle) * eyeOffset}px)`;
+                            segment.eyes.right.style.transform = `translate(${Math.cos(angle) * eyeOffset}px, ${Math.sin(angle) * eyeOffset}px)`;
+                        }
+                    } else {
+                        const prev = segments[index - 1];
+                        const spring = 12 - index * 0.3;
+                        
+                        segment.targetX = prev.x;
+                        segment.targetY = prev.y;
+                        
+                        segment.x += (segment.targetX - segment.x) * spring * deltaTime;
+                        segment.y += (segment.targetY - segment.y) * spring * deltaTime;
+                    }
+
+                    const wiggle = Math.sin(currentTime * 0.01 + index * 0.5) * (index * 0.5);
+                    const x = segment.x + wiggle;
+                    const y = segment.y;
+
+                    segment.element.style.transform = `translate(${x}px, ${y}px)`;
+                });
+
+                requestAnimationFrame(animate);
+            }
+
+            requestAnimationFrame(animate);
+
+            return () => {
+                isActive = false;
+                snake.remove();
+            };
+        }
+
+        // 修改鼠标移动事件处理
+        let currentSnake = null;
+        document.addEventListener('mousemove', (e) => {
+            if (!currentSnake) {
+                currentSnake = createSnakeTrail(e);
+            }
+            e = {
+                clientX: e.clientX,
+                clientY: e.clientY
+            };
+        });
+
+        // 当鼠标离开页面时清除蛇
+        document.addEventListener('mouseleave', () => {
+            if (currentSnake) {
+                currentSnake();
+                currentSnake = null;
+            }
+        });
     </script>
 </body>
 
