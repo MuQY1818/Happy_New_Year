@@ -1543,7 +1543,7 @@
 
         // 流星雨效果
         function createMeteorShower() {
-            const count = 30;
+            const count = 50; // 从30增加到50
             let created = 0;
             
             // 清除之前的流星
@@ -1555,48 +1555,54 @@
                     return;
                 }
 
-                const shootingStar = document.createElement('div');
-                shootingStar.className = 'shooting-star';
-                
-                const startX = Math.random() * (window.innerWidth + 300) - 150;
-                const startY = -100;
-                
-                const angle = Math.random() * 30 - 45;
-                const distance = Math.random() * 800 + 400;
-                const duration = Math.random() * 1.2 + 0.8;
-                
-                shootingStar.style.cssText = `
-                    left: ${startX}px;
-                    top: ${startY}px;
-                    position: fixed;
-                    width: 6px;
-                    height: 6px;
-                    opacity: 0;
-                    z-index: 1000;
-                    background: linear-gradient(to right, 
-                        rgba(255, 255, 255, 1) 0%,
-                        rgba(255, 255, 255, 0.9) 20%,
-                        rgba(255, 255, 255, 0.4) 60%,
-                        transparent 100%);
-                    box-shadow: 
-                        0 0 30px #fff,
-                        0 0 50px #fff,
-                        0 0 70px #fff;
-                    transform-origin: left;
-                `;
-                
-                shootingStar.style.setProperty('--angle', angle + 'deg');
-                shootingStar.style.setProperty('--distance', distance + 'px');
-                
-                document.body.appendChild(shootingStar);
-                
-                requestAnimationFrame(() => {
-                    shootingStar.style.animation = `shoot ${duration}s linear forwards`;
-                });
-                
-                setTimeout(() => shootingStar.remove(), duration * 1000 + 100);
-                created++;
-            }, 150);
+                // 同时创建多个流星
+                const createCount = Math.random() > 0.7 ? 2 : 1; // 30%概率同时创建2个
+                for(let i = 0; i < createCount; i++) {
+                    if (created >= count) break;
+
+                    const shootingStar = document.createElement('div');
+                    shootingStar.className = 'shooting-star';
+                    
+                    const startX = Math.random() * (window.innerWidth + 300) - 150;
+                    const startY = -100;
+                    
+                    const angle = Math.random() * 30 - 45;
+                    const distance = Math.random() * 1000 + 600; // 增加划过距离
+                    const duration = Math.random() * 1.2 + 0.8;
+                    
+                    shootingStar.style.cssText = `
+                        left: ${startX}px;
+                        top: ${startY}px;
+                        position: fixed;
+                        width: 6px;
+                        height: 6px;
+                        opacity: 0;
+                        z-index: 1000;
+                        background: linear-gradient(to right, 
+                            rgba(255, 255, 255, 1) 0%,
+                            rgba(255, 255, 255, 0.9) 20%,
+                            rgba(255, 255, 255, 0.4) 60%,
+                            transparent 100%);
+                        box-shadow: 
+                            0 0 30px #fff,
+                            0 0 50px #fff,
+                            0 0 70px #fff;
+                        transform-origin: left;
+                    `;
+                    
+                    shootingStar.style.setProperty('--angle', angle + 'deg');
+                    shootingStar.style.setProperty('--distance', distance + 'px');
+                    
+                    document.body.appendChild(shootingStar);
+                    
+                    requestAnimationFrame(() => {
+                        shootingStar.style.animation = `shoot ${duration}s linear forwards`;
+                    });
+                    
+                    setTimeout(() => shootingStar.remove(), duration * 1000 + 100);
+                    created++;
+                }
+            }, 100); // 缩短间隔从150ms到100ms
         }
 
         // 烟花秀效果
@@ -1747,14 +1753,21 @@
             }, 15000);
         }
 
-        // 打靶游戏
+        // 修改打靶游戏
         function startTargetGame() {
+            // 检查是否已经有游戏在进行
+            if (document.querySelector('.score-board')) {
+                return; // 如果已有游戏在进行，直接返回
+            }
+
             let score = 0;
             let targets = 0;
             const maxTargets = 10;
+            let gameEnded = false; // 添加游戏结束标志
             
             // 创建计分板
             const scoreBoard = document.createElement('div');
+            scoreBoard.className = 'score-board'; // 添加类名以便检查
             scoreBoard.style.cssText = `
                 position: fixed;
                 top: 20px;
@@ -1768,11 +1781,16 @@
             document.body.appendChild(scoreBoard);
             
             function createTarget() {
+                if (gameEnded) return; // 如果游戏已结束，不再创建新目标
+                
                 if (targets >= maxTargets) {
-                    setTimeout(() => {
-                        alert(`游戏结束！\n最终得分: ${score}/${maxTargets}`);
-                        scoreBoard.remove();
-                    }, 1000);
+                    if (!gameEnded) { // 只在第一次达到目标数时显示提示
+                        gameEnded = true;
+                        setTimeout(() => {
+                            alert(`游戏结束！\n最终得分: ${score}/${maxTargets}`);
+                            scoreBoard.remove();
+                        }, 500);
+                    }
                     return;
                 }
                 
@@ -1799,6 +1817,7 @@
                 requestAnimationFrame(() => target.style.opacity = '1');
                 
                 target.onclick = () => {
+                    if (gameEnded) return; // 如果游戏已结束，不再响应点击
                     score++;
                     scoreBoard.textContent = `得分: ${score}/${maxTargets}`;
                     createStarBurst(x + size/2, y + size/2);
@@ -1806,11 +1825,14 @@
                     setTimeout(createTarget, 500);
                 };
                 
+                // 目标消失前检查游戏是否结束
                 setTimeout(() => {
-                    if (target.parentNode) {
+                    if (!gameEnded && target.parentNode) {
                         target.style.opacity = '0';
-                        setTimeout(() => target.remove(), 300);
-                        setTimeout(createTarget, 500);
+                        setTimeout(() => {
+                            if (target.parentNode) target.remove();
+                            if (!gameEnded) setTimeout(createTarget, 500);
+                        }, 300);
                     }
                 }, 2000);
                 
