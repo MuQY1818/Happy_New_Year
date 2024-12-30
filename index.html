@@ -21,14 +21,14 @@
             font-size: 2em;
             text-align: center;
             animation: fadeIn 3s ease-in;
-            margin-top: 20vh;
+            margin-top: 10vh;
             transition: opacity 0.5s ease;
         }
 
         .poem-line {
             opacity: 0;
             animation: fadeInUp 1s ease-out forwards;
-            margin: 15px 0;
+            margin: 12px 0;
             text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
             transition: all 0.5s ease;
             font-size: 1.2em;
@@ -42,7 +42,7 @@
 
         .heart {
             display: block;
-            margin: 30px 0;
+            margin: 25px 0;
             font-size: 2em;
             text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
             animation: heartbeat 1.5s infinite ease-in-out;
@@ -79,6 +79,7 @@
                 transform: translate(-50%, -50%) scale(1);
                 opacity: 0.2;
             }
+
             100% {
                 transform: translate(-50%, -50%) scale(1.5);
                 opacity: 0;
@@ -96,11 +97,12 @@
         }
 
         @keyframes fadeInUp {
-            from { 
+            from {
                 opacity: 0;
                 transform: translateY(20px);
             }
-            to { 
+
+            to {
                 opacity: 1;
                 transform: translateY(0);
             }
@@ -124,6 +126,7 @@
             from {
                 transform: translateY(-10px) rotate(0deg);
             }
+
             to {
                 transform: translateY(100vh) rotate(360deg);
             }
@@ -148,15 +151,18 @@
         }
 
         @keyframes float {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translateY(0) translateX(0);
             }
+
             50% {
                 transform: translateY(-20px) translateX(10px);
             }
         }
 
-        .message > div:last-child {
+        .message>div:last-child {
             margin-top: 20px;
             animation: glow 2s infinite alternate;
             font-weight: bold;
@@ -168,23 +174,10 @@
             from {
                 text-shadow: 0 0 2px #fff, 0 0 4px #fff, 0 0 6px rgba(255, 77, 77, 0.7), 0 0 8px rgba(255, 77, 77, 0.5);
             }
+
             to {
                 text-shadow: 0 0 3px #fff, 0 0 5px #fff, 0 0 7px rgba(255, 77, 77, 0.7), 0 0 9px rgba(255, 77, 77, 0.5);
             }
-        }
-
-        .rainbow-text {
-            background: linear-gradient(45deg, #ff4d4d, #ff9f1a, #ffff1a, #1aff1a, #1affff, #4d4dff, #ff4dff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: rainbow 8s linear infinite;
-            background-size: 200% 200%;
-        }
-
-        @keyframes rainbow {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 200% 50%; }
         }
 
         .mouse-trail {
@@ -200,8 +193,15 @@
         }
 
         @keyframes trail-fade {
-            from { transform: scale(1); opacity: 1; }
-            to { transform: scale(0); opacity: 0; }
+            from {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            to {
+                transform: scale(0);
+                opacity: 0;
+            }
         }
 
         .poem-line {
@@ -248,10 +248,12 @@
                 transform: translateY(0) scale(1);
                 opacity: 1;
             }
+
             50% {
                 opacity: 1;
                 transform: translateY(calc(var(--ty) * 0.5)) translateX(calc(var(--tx) * 0.5)) scale(1.2);
             }
+
             100% {
                 transform: translateY(var(--ty)) translateX(var(--tx)) scale(0);
                 opacity: 0;
@@ -265,7 +267,7 @@
             z-index: 100;
             animation: floatEmoji 4s linear forwards;
             opacity: 0.8;
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
         }
 
         @keyframes floatEmoji {
@@ -273,19 +275,22 @@
                 transform: translateY(100vh) rotate(0deg) scale(0.8);
                 opacity: 0;
             }
+
             10% {
                 opacity: 0.8;
             }
+
             90% {
                 opacity: 0.8;
             }
+
             100% {
                 transform: translateY(-50px) rotate(360deg) scale(0.4);
                 opacity: 0;
             }
         }
 
-        
+
         .clock {
             position: fixed;
             bottom: 20px;
@@ -317,9 +322,11 @@
                 transform: translate(var(--startX), -10%) rotate(0deg);
                 opacity: 0;
             }
+
             10% {
                 opacity: 0.7;
             }
+
             100% {
                 transform: translate(var(--endX), 110%) rotate(720deg);
                 opacity: 0;
@@ -348,38 +355,6 @@
             transform: translate(-50%, -50%);
         }
 
-        
-        .rainbow {
-            position: fixed;
-            left: 50%;
-            bottom: -30vh;
-            transform: translateX(-50%);
-            width: 200vw;
-            height: 200vh;
-            pointer-events: none;
-            z-index: -1;
-            opacity: 0.15;
-            background: 
-                radial-gradient(
-                    ellipse at 50% 100%,
-                    transparent 40%,
-                    #ff0000 41%, #ff0000 43%,
-                    #ff8800 44%, #ff8800 46%,
-                    #ffff00 47%, #ffff00 49%,
-                    #00ff00 50%, #00ff00 52%,
-                    #00ffff 53%, #00ffff 55%,
-                    #0088ff 56%, #0088ff 58%,
-                    #8800ff 59%, #8800ff 61%,
-                    transparent 62%
-                );
-            filter: blur(5px);
-            animation: rainbow-pulse 4s ease-in-out infinite;
-        }
-
-        @keyframes rainbow-pulse {
-            0%, 100% { opacity: 0.12; }
-            50% { opacity: 0.18; }
-        }
 
         .secret-message {
             position: fixed;
@@ -399,12 +374,19 @@
             display: inline-block;
             animation: secretHeart 1.5s infinite;
             color: #ff4d4d;
-            filter: drop-shadow(0 0 15px rgba(255,0,0,0.8));
+            filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.8));
         }
 
         @keyframes secretHeart {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.3); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.3);
+            }
         }
 
         // 添加星空样式
@@ -424,39 +406,62 @@
             border-radius: 50%;
             animation: twinkle var(--duration) ease-in-out infinite;
             opacity: 0;
+            filter: blur(0.5px);
         }
 
         @keyframes twinkle {
-            0%, 100% { opacity: 0; transform: scale(0.5); }
-            50% { opacity: var(--brightness); transform: scale(1); }
+
+            0%,
+            100% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+
+            50% {
+                opacity: var(--brightness);
+                transform: scale(1);
+            }
         }
 
         // 添加流星效果
         .shooting-star {
             position: absolute;
-            width: 2px;
-            height: 2px;
-            background: linear-gradient(45deg, #fff, transparent);
-            border-radius: 50%;
+            width: 4px;
+            height: 4px;
+            background: linear-gradient(to right, 
+                rgba(255, 255, 255, 1) 0%,
+                rgba(255, 255, 255, 0.8) 30%,
+                rgba(255, 255, 255, 0.3) 70%,
+                transparent 100%);
+            transform-origin: left;
             animation: shoot var(--duration) linear forwards;
             opacity: 0;
-            transform: rotate(var(--angle));
+            filter: blur(1px);
+            box-shadow: 
+                0 0 20px #fff,
+                0 0 30px #fff,
+                0 0 40px #fff;
+            z-index: 1000;
         }
 
         @keyframes shoot {
-            0% { 
+            0% {
                 opacity: 0;
-                transform: rotate(var(--angle)) translateX(0) scale(1);
+                width: 0px;
+                transform: translateX(0) rotate(var(--angle));
             }
             5% {
-                opacity: var(--brightness);
+                opacity: 1;
+                width: var(--length);
             }
             95% {
-                opacity: var(--brightness);
+                opacity: 1;
+                width: var(--length);
             }
-            100% { 
+            100% {
                 opacity: 0;
-                transform: rotate(var(--angle)) translateX(var(--distance)) scale(0.2);
+                width: var(--length);
+                transform: translateX(var(--distance)) rotate(var(--angle));
             }
         }
 
@@ -471,6 +476,7 @@
                 transform: translateY(0);
                 opacity: 1;
             }
+
             to {
                 transform: translateY(var(--height));
                 opacity: 0;
@@ -487,16 +493,16 @@
             font-family: "楷体", KaiTi, "华文楷体", STKaiti, serif;
             text-shadow: 0 0 10px rgba(255, 107, 107, 0.7);
         }
-        
+
         .countdown-text {
             font-size: 2em;
             margin-bottom: 20px;
         }
-        
+
         .countdown-numbers {
             font-size: 3em;
         }
-        
+
         .countdown-numbers span {
             display: inline-block;
             min-width: 70px;
@@ -506,11 +512,19 @@
             border-radius: 10px;
             animation: pulse 1s infinite;
         }
-        
+
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
 
         .music-player {
@@ -551,9 +565,17 @@
         }
 
         @keyframes flash {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
+            0% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
         }
 
         .firework-spiral {
@@ -576,6 +598,7 @@
             0% {
                 transform: translateY(0) rotate(0deg);
             }
+
             100% {
                 transform: translateY(100vh) rotate(360deg);
             }
@@ -602,6 +625,7 @@
                 transform: translateY(0);
                 opacity: 1;
             }
+
             to {
                 transform: translateY(var(--height));
                 opacity: 0;
@@ -616,7 +640,7 @@
         }
 
         .poem-line {
-            margin: 15px 0;
+            margin: 12px 0;
             font-size: 1.2em;
             letter-spacing: 2px;
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
@@ -670,10 +694,10 @@
             snow.style.color = 'white';
             snow.style.zIndex = '-1';
             snow.style.pointerEvents = 'none';
-            
+
             const duration = Math.random() * 3 + 2;
             snow.style.animation = `fall ${duration}s linear`;
-            
+
             document.body.appendChild(snow);
             setTimeout(() => snow.remove(), duration * 1000);
         }
@@ -688,16 +712,16 @@
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
-                
+
                 const size = Math.random() * 5 + 2;
                 particle.style.width = size + 'px';
                 particle.style.height = size + 'px';
-                
+
                 particle.style.left = Math.random() * 100 + '%';
                 particle.style.top = Math.random() * 100 + '%';
                 particle.style.animationDelay = Math.random() * 2 + 's';
                 particle.style.opacity = Math.random() * 0.5;
-                
+
                 container.appendChild(particle);
             }
         }
@@ -706,17 +730,17 @@
 
         // 修改鼠标轨迹效果，减少创建的DOM元素
         let lastTrailTime = 0;
-        document.addEventListener('mousemove', function(e) {
+        document.addEventListener('mousemove', function (e) {
             const now = Date.now();
             if (now - lastTrailTime < 50) return; // 限制创建频率
             lastTrailTime = now;
-            
+
             const trail = document.createElement('div');
             trail.className = 'mouse-trail';
             trail.style.left = e.pageX - 5 + 'px';
             trail.style.top = e.pageY - 5 + 'px';
             document.body.appendChild(trail);
-            
+
             setTimeout(() => trail.remove(), 500); // 减少持续时间
         });
 
@@ -742,21 +766,21 @@
             for (let i = 0; i < particles; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'firework-particle';
-                
+
                 const angle = (i / particles) * 360 + Math.random() * 20;
                 const distance = Math.random() * 100 + 50;  // 减少扩散距离
                 const rad = angle * Math.PI / 180;
-                
+
                 const tx = Math.cos(rad) * distance;
                 const ty = Math.sin(rad) * distance;
-                
+
                 particle.style.setProperty('--tx', tx + 'px');
                 particle.style.setProperty('--ty', ty + 'px');
-                
+
                 const color = colors[Math.floor(Math.random() * colors.length)];
                 particle.style.backgroundColor = color;
                 particle.style.color = color;
-                
+
                 firework.appendChild(particle);
             }
 
@@ -769,7 +793,7 @@
             const x = Math.random() * window.innerWidth;
             const y = Math.random() * (window.innerHeight * 0.6);
             createFirework(x, y);
-            
+
             autoFireworksTimeout = setTimeout(autoFireworks, Math.random() * 1000 + 500);  // 降低频率
         }
 
@@ -778,19 +802,19 @@
 
         // 在现有脚本后添加表情符号效果
         const emojis = ['🎉', '✨', '🌟', '💫', '⭐', '🎊', '🎈', '🎆', '🎇', '🌸', '💝', '💖', '🏮', '🐉', '🍀'];
-        
+
         function createFloatingEmoji() {
             const emoji = document.createElement('div');
             emoji.className = 'floating-emoji';
             emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
-            
+
             // 随机水平位置
             emoji.style.left = Math.random() * window.innerWidth + 'px';
             // 随机大小
             emoji.style.fontSize = Math.random() * 20 + 25 + 'px';
             // 随机动画时间
             emoji.style.animationDuration = Math.random() * 2 + 3 + 's';
-            
+
             document.body.appendChild(emoji);
             setTimeout(() => emoji.remove(), 5000);
         }
@@ -802,7 +826,7 @@
         function updateClock() {
             const clock = document.querySelector('.clock');
             const now = new Date();
-            
+
             const options = {
                 year: 'numeric',
                 month: '2-digit',
@@ -812,7 +836,7 @@
                 second: '2-digit',
                 hour12: false
             };
-            
+
             clock.textContent = now.toLocaleString('zh-CN', options).replace(/\//g, '-');
             requestAnimationFrame(updateClock);
         }
@@ -825,14 +849,14 @@
             const petal = document.createElement('div');
             petal.className = 'petal';
             petal.innerHTML = petals[Math.floor(Math.random() * petals.length)];
-            
+
             const startX = Math.random() * window.innerWidth;
             const drift = (Math.random() - 0.5) * 200;
             petal.style.setProperty('--startX', startX + 'px');
             petal.style.setProperty('--endX', (startX + drift) + 'px');
             petal.style.left = startX + 'px';
             petal.style.fontSize = Math.random() * 15 + 15 + 'px';
-            
+
             document.body.appendChild(petal);
             setTimeout(() => petal.remove(), 10000);
         }
@@ -849,8 +873,8 @@
             const segments = [];
             const segmentCount = 20;
             const colors = [
-                '#ff3333', '#ff6633', '#ff9933', '#ffcc33', 
-                '#ffff33', '#99ff33', '#33ff33', '#33ff99', 
+                '#ff3333', '#ff6633', '#ff9933', '#ffcc33',
+                '#ffff33', '#99ff33', '#33ff33', '#33ff99',
                 '#33ffff', '#3399ff', '#3333ff', '#9933ff'
             ];
 
@@ -864,7 +888,7 @@
                 segment.className = 'snake-segment';
                 segment.style.setProperty('--color', colors[i % colors.length]);
                 snake.appendChild(segment);
-                
+
                 segments.push({
                     element: segment,
                     x: startX,
@@ -890,10 +914,10 @@
                 // 组合多个运动
                 const x1 = Math.sin(t1) * radius * 0.8;
                 const y1 = Math.cos(t1) * radius * 0.8;
-                
+
                 const x2 = Math.sin(t2) * radius * 0.3;
                 const y2 = Math.cos(t2 * 1.5) * radius * 0.3;
-                
+
                 const x3 = Math.sin(t3) * radius * 0.2;
                 const y3 = Math.cos(t3 * 2) * radius * 0.2;
 
@@ -914,11 +938,11 @@
                         const dy = prevSegment.y - segment.y;
                         const distance = Math.sqrt(dx * dx + dy * dy);
                         const idealDistance = 12;
-                        
+
                         // 添加一些随机摆动
                         const wiggle = Math.sin(time * 5 + index * 0.5) * 0.3;
                         const angle = Math.atan2(dy, dx) + wiggle;
-                        
+
                         // 弹性跟随
                         const speed = 0.15 + Math.sin(time * 2 + index * 0.2) * 0.05;
                         segment.x += dx * speed;
@@ -943,26 +967,16 @@
         // 创建蛇
         createSnake();
 
-        // 创建彩虹
-        function createRainbow() {
-            const rainbow = document.createElement('div');
-            rainbow.className = 'rainbow';
-            document.body.appendChild(rainbow);
-        }
-
-        // 创建彩虹
-        createRainbow();
-
         // 添加一个特殊的键盘组合触发彩蛋
         let konami = '';
         const konamiCode = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
-        
+
         document.addEventListener('keydown', (e) => {
             konami += e.key;
             if (konami.length > konamiCode.length) {
                 konami = konami.substr(konami.length - konamiCode.length);
             }
-            
+
             if (konami === konamiCode) {
                 // 触发彩蛋效果
                 activateSecretMode();
@@ -976,10 +990,10 @@
             const message = document.querySelector('.message');
             const messages = document.querySelectorAll('.poem-line');
             const heart = document.querySelector('.heart');
-            
+
             // 淡出所有元素
             message.style.opacity = '0';
-            
+
             // 等待淡出完成后显示秘密消息
             setTimeout(() => {
                 // 创建并显示秘密消息
@@ -996,18 +1010,18 @@
                 secret.style.transition = 'all 1s ease';
                 secret.style.zIndex = '10000';
                 secret.style.textAlign = 'center';
-                
+
                 const text = document.createElement('div');
                 text.innerHTML = '愿你所愿皆成真 <br>';
                 text.style.marginBottom = '20px';
-                
+
                 const subText = document.createElement('div');
                 subText.textContent = '星光不负赶路人';
                 subText.style.fontSize = '0.6em';
                 subText.style.opacity = '0.8';
                 subText.style.fontWeight = 'lighter';
                 subText.style.letterSpacing = '3px';
-                
+
                 const heartIcon = document.createElement('span');
                 heartIcon.className = 'secret-heart';
                 heartIcon.textContent = '✨';
@@ -1015,16 +1029,16 @@
                 heartIcon.style.margin = '0 10px';
                 heartIcon.style.color = '#ffd700';
                 heartIcon.style.textShadow = '0 0 15px rgba(255, 215, 0, 0.8)';
-                
+
                 secret.appendChild(text);
                 secret.appendChild(subText);
                 document.body.appendChild(secret);
-                
+
                 // 显示秘密消息和特效
                 requestAnimationFrame(() => {
                     secret.style.opacity = '1';
                     secret.style.transform = 'translate(-50%, -50%) scale(1)';
-                    
+
                     // 增加烟花数量和持续时间
                     const burstCount = 30; // 从20增加到30
                     for (let i = 0; i < burstCount; i++) {
@@ -1034,16 +1048,16 @@
                             const baseDistance = Math.min(window.innerWidth, window.innerHeight) * 0.3;
                             const randomOffset = Math.random() * 100 - 50; // 添加随机偏移
                             const distance = baseDistance + randomOffset;
-                            
+
                             const x = window.innerWidth / 2 + Math.cos(angle) * distance;
                             const y = window.innerHeight / 2 + Math.sin(angle) * distance;
-                            
+
                             // 每个位置创建多个烟花
                             const burstSize = Math.random() > 0.7 ? 2 : 1; // 30%概率创建双重烟花
-                            for(let j = 0; j < burstSize; j++) {
+                            for (let j = 0; j < burstSize; j++) {
                                 setTimeout(() => {
                                     createStarBurst(
-                                        x + (Math.random() * 40 - 20), 
+                                        x + (Math.random() * 40 - 20),
                                         y + (Math.random() * 40 - 20)
                                     );
                                 }, j * 100);
@@ -1061,7 +1075,7 @@
                 setTimeout(() => {
                     secret.style.opacity = '0';
                     secret.style.transform = 'translate(-50%, -50%) scale(0.8)';
-                    
+
                     setTimeout(() => {
                         secret.remove();
                         message.style.opacity = '1';
@@ -1076,29 +1090,29 @@
             firework.className = 'firework';
             firework.style.left = x + 'px';
             firework.style.top = y + 'px';
-            
+
             // 减少粒子数量，但增加大小和亮度保持视觉效果
             const particles = 16; // 从32减少到16
             const colors = ['#ffd700', '#ff6b6b', '#4ecdc4', '#ff1493'];  // 减少颜色数量
-            
+
             for (let i = 0; i < particles; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'firework-particle';
                 particle.innerHTML = '✨';
                 particle.style.fontSize = Math.random() * 20 + 15 + 'px'; // 增大尺寸
-                
+
                 const angle = (i / particles) * Math.PI * 2;
                 const distance = Math.random() * 80 + 40;
                 const tx = Math.cos(angle) * distance;
                 const ty = Math.sin(angle) * distance;
-                
+
                 particle.style.setProperty('--tx', tx + 'px');
                 particle.style.setProperty('--ty', ty + 'px');
                 particle.style.color = colors[i % colors.length];
-                
+
                 firework.appendChild(particle);
             }
-            
+
             document.body.appendChild(firework);
             setTimeout(() => firework.remove(), 1500);
         }
@@ -1115,7 +1129,7 @@
             star.style.fontSize = Math.random() * 15 + 15 + 'px';
             star.style.animation = `floatUp ${Math.random() * 2 + 3}s ease-out forwards`;
             star.style.textShadow = '0 0 10px rgba(255, 215, 0, 0.8)';
-            
+
             document.body.appendChild(star);
             setTimeout(() => star.remove(), 5000);
         }
@@ -1126,48 +1140,60 @@
             sky.className = 'starry-sky';
             document.body.appendChild(sky);
 
-            // 创建背景星星
-            for (let i = 0; i < 200; i++) {
+            // 增加星星数量和多样性
+            for (let i = 0; i < 300; i++) { // 从200增加到300
                 const star = document.createElement('div');
                 star.className = 'star';
-                
+
                 // 随机大小和位置
-                const size = Math.random() * 2 + 1;
+                const size = Math.random() * 3 + 1; // 增加星星最大尺寸
                 star.style.width = size + 'px';
                 star.style.height = size + 'px';
                 star.style.left = Math.random() * 100 + '%';
                 star.style.top = Math.random() * 100 + '%';
-                
+
+                // 随机颜色
+                const hue = Math.random() * 60 - 30 + 60; // 黄色系
+                const saturation = Math.random() * 30 + 70; // 70-100%
+                const lightness = Math.random() * 30 + 70; // 70-100%
+                star.style.backgroundColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+                star.style.boxShadow = `0 0 ${size * 2}px hsl(${hue}, ${saturation}%, ${lightness}%)`;
+
                 // 随机动画参数
-                star.style.setProperty('--duration', Math.random() * 3 + 2 + 's');
-                star.style.setProperty('--brightness', Math.random() * 0.5 + 0.3);
-                star.style.animationDelay = Math.random() * 3 + 's';
-                
+                star.style.setProperty('--duration', Math.random() * 4 + 2 + 's');
+                star.style.setProperty('--brightness', Math.random() * 0.7 + 0.3);
+                star.style.animationDelay = Math.random() * 4 + 's';
+
                 sky.appendChild(star);
             }
 
-            // 定期创建流星
+            // 增加流星频率和效果
             setInterval(() => {
-                const shootingStar = document.createElement('div');
-                shootingStar.className = 'shooting-star';
-                
-                // 设置流星参数
-                const angle = Math.random() * 45 - 45; // -45到0度之间
-                const distance = Math.random() * 200 + 100;
-                const duration = Math.random() * 1 + 1;
-                const startX = Math.random() * window.innerWidth;
-                const startY = Math.random() * window.innerHeight * 0.5;
-                
-                shootingStar.style.left = startX + 'px';
-                shootingStar.style.top = startY + 'px';
-                shootingStar.style.setProperty('--angle', angle + 'deg');
-                shootingStar.style.setProperty('--distance', distance + 'px');
-                shootingStar.style.setProperty('--duration', duration + 's');
-                shootingStar.style.setProperty('--brightness', 0.8);
-                
-                sky.appendChild(shootingStar);
-                setTimeout(() => shootingStar.remove(), duration * 1000);
-            }, 2000);
+                if (Math.random() > 0.3) { // 增加出现概率到70%
+                    const shootingStar = document.createElement('div');
+                    shootingStar.className = 'shooting-star';
+
+                    // 设置流星参数
+                    const angle = Math.random() * 20 - 45; // -45到-25度之间
+                    const distance = Math.random() * 1000 + 800; // 增加流星划过的距离
+                    const duration = Math.random() * 0.6 + 0.4; // 加快速度
+                    const length = Math.random() * 300 + 200; // 增加流星长度
+                    
+                    // 随机起始位置，但保证从屏幕上方开始
+                    const startX = Math.random() * (window.innerWidth + 500) - 200;
+                    const startY = -50; // 从更高的位置开始
+
+                    shootingStar.style.left = startX + 'px';
+                    shootingStar.style.top = startY + 'px';
+                    shootingStar.style.setProperty('--angle', angle + 'deg');
+                    shootingStar.style.setProperty('--distance', distance + 'px');
+                    shootingStar.style.setProperty('--duration', duration + 's');
+                    shootingStar.style.setProperty('--length', length + 'px');
+
+                    document.body.appendChild(shootingStar);
+                    setTimeout(() => shootingStar.remove(), duration * 1000);
+                }
+            }, 500); // 更频繁的流星
         }
 
         // 创建星空
@@ -1177,10 +1203,10 @@
         function createBackgroundFireworks() {
             // 减少创建频率
             setTimeout(createBackgroundFireworks, Math.random() * 1000 + 800); // 增加间隔
-            
+
             // 随机决定是否创建，控制密度
             if (Math.random() > 0.7) return;
-            
+
             const x = Math.random() * window.innerWidth;
             const y = Math.random() * (window.innerHeight * 0.7);
             createBackgroundBurst(x, y);
@@ -1193,35 +1219,35 @@
             firework.style.left = x + 'px';
             firework.style.top = y + 'px';
             firework.style.zIndex = '-1'; // 确保在背景层
-            
+
             const colors = [
                 '#ffd700', '#ff6b6b', '#4ecdc4', '#45b7d1',
                 '#96f7d2', '#f7d794', '#f8a5c2', '#778beb'
             ];
-            
+
             const particles = 20;
             for (let i = 0; i < particles; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'firework-particle';
-                
+
                 // 随机使用不同的形状
                 const shapes = ['✦', '✬', '⭐', '✶', '●'];
                 particle.innerHTML = shapes[Math.floor(Math.random() * shapes.length)];
                 particle.style.fontSize = Math.random() * 8 + 6 + 'px'; // 背景烟花稍小
-                
+
                 const angle = (i / particles) * Math.PI * 2;
                 const distance = Math.random() * 60 + 30; // 爆炸范围稍小
                 const tx = Math.cos(angle) * distance;
                 const ty = Math.sin(angle) * distance;
-                
+
                 particle.style.setProperty('--tx', tx + 'px');
                 particle.style.setProperty('--ty', ty + 'px');
                 particle.style.color = colors[Math.floor(Math.random() * colors.length)];
                 particle.style.opacity = '0.6'; // 降低背景烟花的不透明度
-                
+
                 firework.appendChild(particle);
             }
-            
+
             document.body.appendChild(firework);
             setTimeout(() => firework.remove(), 1500);
         }
@@ -1232,13 +1258,13 @@
             bgMusic.play().catch(() => {
                 console.log('等待用户交互后播放音乐...');
             });
-            
+
             // 如果自动播放失败，监听任意点击事件来播放
             document.addEventListener('click', function playOnFirstClick() {
                 bgMusic.play();
                 document.removeEventListener('click', playOnFirstClick);
             }, { once: true });
-            
+
             // 其他初始化代码...
             const now = new Date();
             if (now >= targetDate) {
@@ -1254,10 +1280,10 @@
 
         // 获取音频元素
         const bgMusic = document.getElementById('bgMusic');
-        
+
         // 设置音量
         bgMusic.volume = 0.3; // 音量设为 30%
-        
+
         // 添加音乐控制按钮
         const musicBtn = document.createElement('div');
         musicBtn.className = 'music-control';
@@ -1271,7 +1297,7 @@
         musicBtn.style.zIndex = '1000';
         musicBtn.style.textShadow = '0 0 10px rgba(255, 255, 255, 0.8)';
         musicBtn.style.transition = 'transform 0.3s ease';
-        
+
         // 添加动画样式
         const style = document.createElement('style');
         style.textContent = `
@@ -1288,7 +1314,7 @@
             }
         `;
         document.head.appendChild(style);
-        
+
         // 添加点击事件
         musicBtn.addEventListener('click', () => {
             if (bgMusic.paused) {
@@ -1299,27 +1325,27 @@
                 musicBtn.classList.add('paused');
             }
         });
-        
+
         document.body.appendChild(musicBtn);
-        
+
         // 获取元素
         const message = document.querySelector('.message');
         const countdown = document.querySelector('.countdown');
-        
+
         // 设置目标时间
         const targetDate = new Date('2025-01-01T00:00:00');
-        
+
         // 更新倒计时
         function updateCountdown() {
             try {
                 const now = new Date();
                 const diff = targetDate - now;
-                
+
                 if (isNaN(diff)) {
                     console.error('Invalid date calculation');
                     return;
                 }
-                
+
                 if (diff <= 0) {
                     // 创建一个闪光效果
                     const flash = document.createElement('div');
@@ -1354,7 +1380,7 @@
                         message.style.display = 'block';
                         message.style.opacity = '0';
                         message.style.transform = 'scale(0.8)';
-                        
+
                         requestAnimationFrame(() => {
                             message.style.opacity = '1';
                             message.style.transform = 'scale(1)';
@@ -1362,7 +1388,7 @@
                         });
 
                         // 开始播放音乐
-                        bgMusic.play().catch(() => {});
+                        bgMusic.play().catch(() => { });
 
                         // 减少初始烟花数量但增加大小
                         const burstCount = 30; // 从50减少到30
@@ -1371,7 +1397,7 @@
                                 const x = Math.random() * window.innerWidth;
                                 const y = Math.random() * window.innerHeight * 0.8;
                                 createStarBurst(x, y);
-                                
+
                                 // 只在关键位置创建多重烟花
                                 if (i % 5 === 0) {
                                     setTimeout(() => {
@@ -1383,26 +1409,26 @@
                                 }
                             }, i * 120);
                         }
-                        
+
                         createSpiralFireworks();
                         createBackgroundFireworks();
                     }, 600);
 
                     return;
                 }
-                
+
                 // 计算剩余时间
                 const days = Math.floor(diff / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-                
+
                 // 更新显示
                 document.getElementById('days').textContent = String(days).padStart(2, '0');
                 document.getElementById('hours').textContent = String(hours).padStart(2, '0');
                 document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
                 document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
-                
+
                 // 继续倒计时
                 requestAnimationFrame(updateCountdown);
             } catch (error) {
@@ -1412,7 +1438,7 @@
                 message.style.display = 'block';
             }
         }
-        
+
         // 添加螺旋烟花效果
         function createSpiralFireworks() {
             const centerX = window.innerWidth / 2;
@@ -1426,7 +1452,7 @@
                     const angle = (i / particlesPerRound) * Math.PI * 2;
                     const delay = (round * particlesPerRound + i) * 60;
                     const currentRadius = radius * (1 - round * 0.2);
-                    
+
                     setTimeout(() => {
                         const x = centerX + Math.cos(angle) * currentRadius;
                         const y = centerY + Math.sin(angle) * currentRadius;
@@ -1437,4 +1463,5 @@
         }
     </script>
 </body>
+
 </html>
