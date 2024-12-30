@@ -407,61 +407,56 @@
             animation: twinkle var(--duration) ease-in-out infinite;
             opacity: 0;
             filter: blur(0.5px);
+            box-shadow: 0 0 4px #fff;
         }
 
         @keyframes twinkle {
-
-            0%,
-            100% {
-                opacity: 0;
-                transform: scale(0.5);
+            0%, 100% {
+                opacity: 0.1;
+                transform: scale(0.3);
+                filter: brightness(0.5);
             }
-
             50% {
                 opacity: var(--brightness);
-                transform: scale(1);
+                transform: scale(1.2);
+                filter: brightness(1.5);
             }
         }
 
         // 添加流星效果
         .shooting-star {
-            position: absolute;
-            width: 4px;
-            height: 4px;
+            position: fixed;
+            width: 6px;
+            height: 6px;
             background: linear-gradient(to right, 
                 rgba(255, 255, 255, 1) 0%,
-                rgba(255, 255, 255, 0.8) 30%,
-                rgba(255, 255, 255, 0.3) 70%,
+                rgba(255, 255, 255, 0.9) 20%,
+                rgba(255, 255, 255, 0.4) 60%,
                 transparent 100%);
             transform-origin: left;
-            animation: shoot var(--duration) linear forwards;
             opacity: 0;
-            filter: blur(1px);
+            filter: blur(1.5px);
             box-shadow: 
-                0 0 20px #fff,
                 0 0 30px #fff,
-                0 0 40px #fff;
+                0 0 50px #fff,
+                0 0 70px #fff;
             z-index: 1000;
         }
 
         @keyframes shoot {
             0% {
                 opacity: 0;
-                width: 0px;
-                transform: translateX(0) rotate(var(--angle));
+                transform: translate(0, 0) rotate(var(--angle));
             }
             5% {
                 opacity: 1;
-                width: var(--length);
             }
             95% {
                 opacity: 1;
-                width: var(--length);
             }
             100% {
                 opacity: 0;
-                width: var(--length);
-                transform: translateX(var(--distance)) rotate(var(--angle));
+                transform: translate(var(--distance), var(--distance)) rotate(var(--angle));
             }
         }
 
@@ -1461,6 +1456,372 @@
                 }
             }
         }
+
+        // 添加鼠标点击特效和交互功能
+        function addInteractiveFeatures() {
+            // 1. 点击创建烟花效果
+            document.addEventListener('click', (e) => {
+                if (e.target.tagName !== 'BUTTON') { // 不是按钮时才触发
+                    createStarBurst(e.clientX, e.clientY);
+                }
+            });
+
+            // 2. 添加交互按钮组
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                left: 20px;
+                display: flex;
+                gap: 10px;
+                z-index: 1000;
+                flex-wrap: wrap;
+                max-width: 80vw;
+            `;
+
+            // 创建按钮样式
+            const buttonStyle = `
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: white;
+                padding: 8px 15px;
+                border-radius: 20px;
+                cursor: pointer;
+                font-family: "楷体";
+                backdrop-filter: blur(5px);
+                transition: all 0.3s ease;
+                font-size: 14px;
+                text-shadow: 0 0 10px rgba(255, 107, 107, 0.7);
+            `;
+
+            // 添加按钮
+            const buttons = [
+                {
+                    text: '✨ 流星雨',
+                    onClick: createMeteorShower
+                },
+                {
+                    text: '🎆 烟花秀',
+                    onClick: createFireworkShow
+                },
+                {
+                    text: '💫 星光闪烁',
+                    onClick: twinkleStars
+                },
+                {
+                    text: '🌈 彩虹特效',
+                    onClick: createRainbowEffect
+                },
+                {
+                    text: '🎨 变色模式',
+                    onClick: toggleColorMode
+                },
+                {
+                    text: '🎯 打靶游戏',
+                    onClick: startTargetGame
+                }
+            ];
+
+            buttons.forEach(btn => {
+                const button = document.createElement('button');
+                button.innerHTML = btn.text;
+                button.style.cssText = buttonStyle;
+                button.addEventListener('mouseover', () => {
+                    button.style.transform = 'scale(1.1)';
+                    button.style.background = 'rgba(255, 255, 255, 0.2)';
+                });
+                button.addEventListener('mouseout', () => {
+                    button.style.transform = 'scale(1)';
+                    button.style.background = 'rgba(255, 255, 255, 0.1)';
+                });
+                button.addEventListener('click', btn.onClick);
+                buttonContainer.appendChild(button);
+            });
+
+            document.body.appendChild(buttonContainer);
+        }
+
+        // 流星雨效果
+        function createMeteorShower() {
+            const count = 30;
+            let created = 0;
+            
+            // 清除之前的流星
+            document.querySelectorAll('.shooting-star').forEach(star => star.remove());
+            
+            const interval = setInterval(() => {
+                if (created >= count) {
+                    clearInterval(interval);
+                    return;
+                }
+
+                const shootingStar = document.createElement('div');
+                shootingStar.className = 'shooting-star';
+                
+                const startX = Math.random() * (window.innerWidth + 300) - 150;
+                const startY = -100;
+                
+                const angle = Math.random() * 30 - 45;
+                const distance = Math.random() * 800 + 400;
+                const duration = Math.random() * 1.2 + 0.8;
+                
+                shootingStar.style.cssText = `
+                    left: ${startX}px;
+                    top: ${startY}px;
+                    position: fixed;
+                    width: 6px;
+                    height: 6px;
+                    opacity: 0;
+                    z-index: 1000;
+                    background: linear-gradient(to right, 
+                        rgba(255, 255, 255, 1) 0%,
+                        rgba(255, 255, 255, 0.9) 20%,
+                        rgba(255, 255, 255, 0.4) 60%,
+                        transparent 100%);
+                    box-shadow: 
+                        0 0 30px #fff,
+                        0 0 50px #fff,
+                        0 0 70px #fff;
+                    transform-origin: left;
+                `;
+                
+                shootingStar.style.setProperty('--angle', angle + 'deg');
+                shootingStar.style.setProperty('--distance', distance + 'px');
+                
+                document.body.appendChild(shootingStar);
+                
+                requestAnimationFrame(() => {
+                    shootingStar.style.animation = `shoot ${duration}s linear forwards`;
+                });
+                
+                setTimeout(() => shootingStar.remove(), duration * 1000 + 100);
+                created++;
+            }, 150);
+        }
+
+        // 烟花秀效果
+        function createFireworkShow() {
+            const duration = 3000; // 持续3秒
+            const interval = setInterval(() => {
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * (window.innerHeight * 0.6);
+                createStarBurst(x, y);
+            }, 200);
+
+            setTimeout(() => clearInterval(interval), duration);
+        }
+
+        // 星光闪烁效果
+        function twinkleStars() {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach(star => {
+                // 随机大小
+                const size = Math.random() * 4 + 2;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                
+                // 随机颜色
+                const colors = ['#fff', '#ffd700', '#ffb6c1', '#87ceeb'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                star.style.background = color;
+                star.style.boxShadow = `0 0 ${size * 2}px ${color}`;
+                
+                // 重置动画
+                star.style.animation = 'none';
+                star.offsetHeight;
+                
+                // 设置新的动画参数
+                const duration = Math.random() * 3 + 2;
+                star.style.animation = `twinkle ${duration}s ease-in-out infinite`;
+                star.style.setProperty('--brightness', Math.random() * 0.5 + 0.5);
+                
+                // 添加闪烁效果
+                star.style.transition = 'all 0.3s ease';
+            });
+        }
+
+        // 初始化交互功能
+        addInteractiveFeatures();
+
+        // 添加更多交互按钮和效果
+        const additionalButtons = [
+            {
+                text: '🌈 彩虹特效',
+                onClick: createRainbowEffect
+            },
+            {
+                text: '🎨 变色模式',
+                onClick: toggleColorMode
+            },
+            {
+                text: '🎯 打靶游戏',
+                onClick: startTargetGame
+            }
+        ];
+
+        // 彩虹特效
+        function createRainbowEffect() {
+            const rainbow = document.createElement('div');
+            rainbow.style.cssText = `
+                position: fixed;
+                width: 200vw;
+                height: 200vh;
+                left: 50%;
+                bottom: -50vh;
+                transform: translateX(-50%);
+                background: radial-gradient(ellipse at 50% 100%,
+                    transparent 40%,
+                    rgba(255,0,0,0.2) 41%, rgba(255,0,0,0.2) 43%,
+                    rgba(255,165,0,0.2) 44%, rgba(255,165,0,0.2) 46%,
+                    rgba(255,255,0,0.2) 47%, rgba(255,255,0,0.2) 49%,
+                    rgba(0,255,0,0.2) 50%, rgba(0,255,0,0.2) 52%,
+                    rgba(0,255,255,0.2) 53%, rgba(0,255,255,0.2) 55%,
+                    rgba(0,0,255,0.2) 56%, rgba(0,0,255,0.2) 58%,
+                    rgba(238,130,238,0.2) 59%, rgba(238,130,238,0.2) 61%,
+                    transparent 62%);
+                filter: blur(5px);
+                opacity: 0;
+                transition: opacity 1s ease;
+                pointer-events: none;
+                z-index: -1;
+            `;
+            document.body.appendChild(rainbow);
+            requestAnimationFrame(() => rainbow.style.opacity = '1');
+            setTimeout(() => {
+                rainbow.style.opacity = '0';
+                setTimeout(() => rainbow.remove(), 1000);
+            }, 5000);
+        }
+
+        // 修改变色模式效果
+        function toggleColorMode() {
+            const colors = [
+                '#ff6b6b', // 粉红色
+                '#ffd700', // 金色
+                '#4ecdc4', // 青色
+                '#45b7d1', // 蓝色
+                '#ff69b4', // 粉色
+                '#9b59b6'  // 紫色
+            ];
+            let currentIndex = 0;
+            const elements = document.querySelectorAll('.poem-line, .heart');
+            
+            // 增加颜色变化的动画效果
+            elements.forEach(el => {
+                el.style.transition = 'color 0.5s ease, text-shadow 0.5s ease';
+            });
+            
+            // 更快的颜色切换速度
+            const interval = setInterval(() => {
+                elements.forEach(el => {
+                    el.style.color = colors[currentIndex];
+                    // 增强光晕效果
+                    el.style.textShadow = `
+                        0 0 10px ${colors[currentIndex]},
+                        0 0 20px ${colors[currentIndex]},
+                        0 0 30px ${colors[currentIndex]}
+                    `;
+                });
+                
+                // 添加缩放动画
+                elements.forEach(el => {
+                    el.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        el.style.transform = 'scale(1)';
+                    }, 250);
+                });
+                
+                currentIndex = (currentIndex + 1) % colors.length;
+            }, 500); // 加快切换速度
+            
+            // 持续时间延长到15秒
+            setTimeout(() => {
+                clearInterval(interval);
+                // 恢复原始样式
+                elements.forEach(el => {
+                    el.style.color = '';
+                    el.style.textShadow = '';
+                    el.style.transform = '';
+                    el.style.transition = '';
+                });
+            }, 15000);
+        }
+
+        // 打靶游戏
+        function startTargetGame() {
+            let score = 0;
+            let targets = 0;
+            const maxTargets = 10;
+            
+            // 创建计分板
+            const scoreBoard = document.createElement('div');
+            scoreBoard.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                color: white;
+                font-size: 24px;
+                text-shadow: 0 0 10px rgba(255,255,255,0.5);
+                z-index: 1000;
+            `;
+            scoreBoard.textContent = `得分: ${score}/${maxTargets}`;
+            document.body.appendChild(scoreBoard);
+            
+            function createTarget() {
+                if (targets >= maxTargets) {
+                    setTimeout(() => {
+                        alert(`游戏结束！\n最终得分: ${score}/${maxTargets}`);
+                        scoreBoard.remove();
+                    }, 1000);
+                    return;
+                }
+                
+                const target = document.createElement('div');
+                const size = Math.random() * 30 + 20;
+                const x = Math.random() * (window.innerWidth - size);
+                const y = Math.random() * (window.innerHeight - size);
+                
+                target.style.cssText = `
+                    position: fixed;
+                    left: ${x}px;
+                    top: ${y}px;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: radial-gradient(circle, #fff 0%, #ff6b6b 50%, transparent 70%);
+                    border-radius: 50%;
+                    cursor: pointer;
+                    opacity: 0;
+                    transition: all 0.3s ease;
+                    z-index: 1000;
+                `;
+                
+                document.body.appendChild(target);
+                requestAnimationFrame(() => target.style.opacity = '1');
+                
+                target.onclick = () => {
+                    score++;
+                    scoreBoard.textContent = `得分: ${score}/${maxTargets}`;
+                    createStarBurst(x + size/2, y + size/2);
+                    target.remove();
+                    setTimeout(createTarget, 500);
+                };
+                
+                setTimeout(() => {
+                    if (target.parentNode) {
+                        target.style.opacity = '0';
+                        setTimeout(() => target.remove(), 300);
+                        setTimeout(createTarget, 500);
+                    }
+                }, 2000);
+                
+                targets++;
+            }
+            
+            createTarget();
+        }
+
+        // 将新按钮添加到现有按钮组
+        buttons.push(...additionalButtons);
     </script>
 </body>
 
