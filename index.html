@@ -476,6 +476,151 @@
                 opacity: 0;
             }
         }
+
+        .countdown {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            text-align: center;
+            font-family: "楷体", KaiTi, "华文楷体", STKaiti, serif;
+            text-shadow: 0 0 10px rgba(255, 107, 107, 0.7);
+        }
+        
+        .countdown-text {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        
+        .countdown-numbers {
+            font-size: 3em;
+        }
+        
+        .countdown-numbers span {
+            display: inline-block;
+            min-width: 70px;
+            padding: 0 10px;
+            margin: 0 5px;
+            background: rgba(255, 107, 107, 0.2);
+            border-radius: 10px;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            font-size: 2em;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 107, 107, 0.7);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .music-player:hover {
+            transform: rotate(360deg);
+        }
+
+        .music-player.playing {
+            color: #ff6b6b;
+        }
+
+        .music-player.paused {
+            color: #fff;
+        }
+
+        .flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 9999;
+            animation: flash 1s ease-in-out forwards;
+        }
+
+        @keyframes flash {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .firework-spiral {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .firework-spiral-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: spiral 2s linear infinite;
+            box-shadow: 0 0 15px currentColor, 0 0 30px currentColor;
+            filter: blur(0.5px);
+        }
+
+        @keyframes spiral {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .firework-trail {
+            position: fixed;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .firework-trail-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: riseUp 3s linear infinite;
+            box-shadow: 0 0 15px currentColor, 0 0 30px currentColor;
+            filter: blur(0.5px);
+        }
+
+        @keyframes riseUp {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(var(--height));
+                opacity: 0;
+            }
+        }
+
+        .new-year-wish {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .poem-line {
+            margin: 15px 0;
+            font-size: 1.2em;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
     </style>
 </head>
 
@@ -485,15 +630,28 @@
     </audio>
     <div class="particles"></div>
     <div class="clock"></div>
+    <div class="countdown" style="display: none;">
+        <div class="countdown-text">距离2025年还有</div>
+        <div class="countdown-numbers">
+            <span id="days">00</span>天
+            <span id="hours">00</span>时
+            <span id="minutes">00</span>分
+            <span id="seconds">00</span>秒
+        </div>
+    </div>
     <div class="message">
         <div class="poem">
-            <div class="poem-line" style="animation-delay: 0.5s">新岁初启，春风暖怀</div>
-            <div class="poem-line" style="animation-delay: 1s">星光耀目，美好常随</div>
-            <div class="poem-line" style="animation-delay: 1.5s">四时安稳，梦伴长怀</div>
-            <div class="poem-line" style="animation-delay: 2s">心意托风，不语自欢</div>
+            <div class="poem-line" style="animation-delay: 0.5s">岁序更替 山河无恙</div>
+            <div class="poem-line" style="animation-delay: 1s">愿你眉目如画 岁月胜花</div>
+            <div class="poem-line" style="animation-delay: 1.5s">前程似锦 星光满路</div>
+            <div class="poem-line" style="animation-delay: 2s">所愿皆成 所念皆如</div>
+            <div class="poem-line" style="animation-delay: 2.5s">新年胜意 暖暖相围</div>
         </div>
-        <span class="heart">❤</span>
-        <div>新年快乐</div>
+        <span class="heart">✨</span>
+        <div class="new-year-wish">
+            <span style="font-size: 1.5em; margin-bottom: 10px;">新年快乐</span>
+            <div style="font-size: 0.8em; opacity: 0.9; margin-top: 10px;">愿你所有的期待都能成真</div>
+        </div>
     </div>
 
     <script>
@@ -919,35 +1077,24 @@
             firework.style.left = x + 'px';
             firework.style.top = y + 'px';
             
-            // 增加颜色种类
-            const colors = [
-                '#ffd700', // 金色
-                '#fff5b1', // 浅金
-                '#fffacd', // 柠檬绸
-                '#ffffe0', // 浅黄
-                '#ff69b4', // 粉色
-                '#ff8c00', // 深橙色
-                '#ff4500'  // 橙红色
-            ];
+            // 减少粒子数量，但增加大小和亮度保持视觉效果
+            const particles = 16; // 从32减少到16
+            const colors = ['#ffd700', '#ff6b6b', '#4ecdc4', '#ff1493'];  // 减少颜色数量
             
-            // 增加粒子数量
-            const particles = 24; // 从12增加到24
             for (let i = 0; i < particles; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'firework-particle';
-                // 随机使用星星或圆点
-                particle.innerHTML = Math.random() > 0.5 ? '✨' : '●';
-                particle.style.fontSize = Math.random() * 15 + 10 + 'px';
+                particle.innerHTML = '✨';
+                particle.style.fontSize = Math.random() * 20 + 15 + 'px'; // 增大尺寸
                 
                 const angle = (i / particles) * Math.PI * 2;
-                // 增加随机距离变化
-                const distance = Math.random() * 100 + 50;
+                const distance = Math.random() * 80 + 40;
                 const tx = Math.cos(angle) * distance;
                 const ty = Math.sin(angle) * distance;
                 
                 particle.style.setProperty('--tx', tx + 'px');
                 particle.style.setProperty('--ty', ty + 'px');
-                particle.style.color = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.color = colors[i % colors.length];
                 
                 firework.appendChild(particle);
             }
@@ -1028,37 +1175,15 @@
 
         // 添加持续的背景烟花效果
         function createBackgroundFireworks() {
-            // 随机位置生成烟花
+            // 减少创建频率
+            setTimeout(createBackgroundFireworks, Math.random() * 1000 + 800); // 增加间隔
+            
+            // 随机决定是否创建，控制密度
+            if (Math.random() > 0.7) return;
+            
             const x = Math.random() * window.innerWidth;
-            const y = Math.random() * (window.innerHeight * 0.7); // 控制高度范围
-            
-            // 创建上升的火花
-            const trail = document.createElement('div');
-            trail.style.position = 'fixed';
-            trail.style.left = x + 'px';
-            trail.style.bottom = '0';
-            trail.style.width = '2px';
-            trail.style.height = '2px';
-            trail.style.background = '#ffd700';
-            trail.style.boxShadow = '0 0 6px #ffd700';
-            trail.style.borderRadius = '50%';
-            trail.style.transform = 'translateY(0)';
-            trail.style.transition = 'transform 1s ease-out';
-            document.body.appendChild(trail);
-            
-            // 上升动画
-            requestAnimationFrame(() => {
-                trail.style.transform = `translateY(${-(window.innerHeight - y)}px)`;
-            });
-            
-            // 到达顶点后爆炸
-            setTimeout(() => {
-                trail.remove();
-                createBackgroundBurst(x, y);
-            }, 1000);
-            
-            // 随机间隔后继续创建
-            setTimeout(createBackgroundFireworks, Math.random() * 800 + 400);
+            const y = Math.random() * (window.innerHeight * 0.7);
+            createBackgroundBurst(x, y);
         }
 
         // 背景烟花爆炸效果
@@ -1102,9 +1227,30 @@
         }
 
         // 在页面加载时启动背景烟花
-        setTimeout(() => {
-            createBackgroundFireworks();
-        }, 1000);
+        window.addEventListener('load', () => {
+            // 尝试自动播放
+            bgMusic.play().catch(() => {
+                console.log('等待用户交互后播放音乐...');
+            });
+            
+            // 如果自动播放失败，监听任意点击事件来播放
+            document.addEventListener('click', function playOnFirstClick() {
+                bgMusic.play();
+                document.removeEventListener('click', playOnFirstClick);
+            }, { once: true });
+            
+            // 其他初始化代码...
+            const now = new Date();
+            if (now >= targetDate) {
+                countdown.style.display = 'none';
+                message.style.display = 'block';
+                createBackgroundFireworks();
+            } else {
+                message.style.display = 'none';
+                countdown.style.display = 'block';
+                updateCountdown();
+            }
+        });
 
         // 获取音频元素
         const bgMusic = document.getElementById('bgMusic');
@@ -1156,13 +1302,139 @@
         
         document.body.appendChild(musicBtn);
         
-        // 处理自动播放
-        document.addEventListener('click', function initAudio() {
-            bgMusic.play().catch(() => {
-                // 如果自动播放失败,不做处理,让用户手动点击播放
-            });
-            document.removeEventListener('click', initAudio);
-        }, { once: true });
+        // 获取元素
+        const message = document.querySelector('.message');
+        const countdown = document.querySelector('.countdown');
+        
+        // 设置目标时间
+        const targetDate = new Date('2025-01-01T00:00:00');
+        
+        // 更新倒计时
+        function updateCountdown() {
+            try {
+                const now = new Date();
+                const diff = targetDate - now;
+                
+                if (isNaN(diff)) {
+                    console.error('Invalid date calculation');
+                    return;
+                }
+                
+                if (diff <= 0) {
+                    // 创建一个闪光效果
+                    const flash = document.createElement('div');
+                    flash.style.position = 'fixed';
+                    flash.style.top = '0';
+                    flash.style.left = '0';
+                    flash.style.width = '100%';
+                    flash.style.height = '100%';
+                    flash.style.backgroundColor = 'white';
+                    flash.style.opacity = '0';
+                    flash.style.zIndex = '9999';
+                    flash.style.transition = 'opacity 0.5s ease-out';
+                    document.body.appendChild(flash);
+
+                    // 触发闪光
+                    requestAnimationFrame(() => {
+                        flash.style.opacity = '0.8';
+                        setTimeout(() => {
+                            flash.style.opacity = '0';
+                            setTimeout(() => flash.remove(), 500);
+                        }, 100);
+                    });
+
+                    // 隐藏倒计时
+                    countdown.style.opacity = '0';
+                    countdown.style.transform = 'scale(1.5)';
+                    countdown.style.transition = 'all 0.5s ease-out';
+
+                    // 延迟显示祝福内容
+                    setTimeout(() => {
+                        countdown.style.display = 'none';
+                        message.style.display = 'block';
+                        message.style.opacity = '0';
+                        message.style.transform = 'scale(0.8)';
+                        
+                        requestAnimationFrame(() => {
+                            message.style.opacity = '1';
+                            message.style.transform = 'scale(1)';
+                            message.style.transition = 'all 1s ease-out';
+                        });
+
+                        // 开始播放音乐
+                        bgMusic.play().catch(() => {});
+
+                        // 减少初始烟花数量但增加大小
+                        const burstCount = 30; // 从50减少到30
+                        for (let i = 0; i < burstCount; i++) {
+                            setTimeout(() => {
+                                const x = Math.random() * window.innerWidth;
+                                const y = Math.random() * window.innerHeight * 0.8;
+                                createStarBurst(x, y);
+                                
+                                // 只在关键位置创建多重烟花
+                                if (i % 5 === 0) {
+                                    setTimeout(() => {
+                                        createStarBurst(
+                                            x + (Math.random() * 60 - 30),
+                                            y + (Math.random() * 60 - 30)
+                                        );
+                                    }, 100);
+                                }
+                            }, i * 120);
+                        }
+                        
+                        createSpiralFireworks();
+                        createBackgroundFireworks();
+                    }, 600);
+
+                    return;
+                }
+                
+                // 计算剩余时间
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                // 更新显示
+                document.getElementById('days').textContent = String(days).padStart(2, '0');
+                document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+                document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+                document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+                
+                // 继续倒计时
+                requestAnimationFrame(updateCountdown);
+            } catch (error) {
+                console.error('Error in countdown:', error);
+                // 发生错误时显示祝福内容作为后备方案
+                countdown.style.display = 'none';
+                message.style.display = 'block';
+            }
+        }
+        
+        // 添加螺旋烟花效果
+        function createSpiralFireworks() {
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            const rounds = 2; // 减少圈数
+            const particlesPerRound = 15; // 减少每圈粒子数
+            const radius = Math.min(window.innerWidth, window.innerHeight) * 0.3;
+
+            for (let round = 0; round < rounds; round++) {
+                for (let i = 0; i < particlesPerRound; i++) {
+                    const angle = (i / particlesPerRound) * Math.PI * 2;
+                    const delay = (round * particlesPerRound + i) * 60;
+                    const currentRadius = radius * (1 - round * 0.2);
+                    
+                    setTimeout(() => {
+                        const x = centerX + Math.cos(angle) * currentRadius;
+                        const y = centerY + Math.sin(angle) * currentRadius;
+                        createStarBurst(x, y);
+                    }, delay);
+                }
+            }
+        }
     </script>
 </body>
 </html>
