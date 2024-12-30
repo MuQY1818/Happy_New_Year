@@ -480,6 +480,9 @@
 </head>
 
 <body>
+    <audio id="bgMusic" loop>
+        <source src="Martin Ermen - River Flows In You.mp3" type="audio/mpeg">
+    </audio>
     <div class="particles"></div>
     <div class="clock"></div>
     <div class="message">
@@ -1102,6 +1105,64 @@
         setTimeout(() => {
             createBackgroundFireworks();
         }, 1000);
+
+        // 获取音频元素
+        const bgMusic = document.getElementById('bgMusic');
+        
+        // 设置音量
+        bgMusic.volume = 0.3; // 音量设为 30%
+        
+        // 添加音乐控制按钮
+        const musicBtn = document.createElement('div');
+        musicBtn.className = 'music-control';
+        musicBtn.innerHTML = '🎵';
+        musicBtn.style.position = 'fixed';
+        musicBtn.style.top = '20px';
+        musicBtn.style.left = '20px';
+        musicBtn.style.fontSize = '24px';
+        musicBtn.style.color = '#fff';
+        musicBtn.style.cursor = 'pointer';
+        musicBtn.style.zIndex = '1000';
+        musicBtn.style.textShadow = '0 0 10px rgba(255, 255, 255, 0.8)';
+        musicBtn.style.transition = 'transform 0.3s ease';
+        
+        // 添加动画样式
+        const style = document.createElement('style');
+        style.textContent = `
+            .music-control {
+                animation: rotate 3s linear infinite;
+            }
+            .music-control.paused {
+                animation-play-state: paused;
+                opacity: 0.6;
+            }
+            @keyframes rotate {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // 添加点击事件
+        musicBtn.addEventListener('click', () => {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                musicBtn.classList.remove('paused');
+            } else {
+                bgMusic.pause();
+                musicBtn.classList.add('paused');
+            }
+        });
+        
+        document.body.appendChild(musicBtn);
+        
+        // 处理自动播放
+        document.addEventListener('click', function initAudio() {
+            bgMusic.play().catch(() => {
+                // 如果自动播放失败,不做处理,让用户手动点击播放
+            });
+            document.removeEventListener('click', initAudio);
+        }, { once: true });
     </script>
 </body>
 </html>
