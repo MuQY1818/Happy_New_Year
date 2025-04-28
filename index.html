@@ -1007,11 +1007,11 @@
                 secret.style.textAlign = 'center';
 
                 const text = document.createElement('div');
-                text.innerHTML = '愿你所愿皆成真 <br>';
+                text.innerHTML = '我喜欢你 <br>';
                 text.style.marginBottom = '20px';
 
                 const subText = document.createElement('div');
-                subText.textContent = '星光不负赶路人';
+                subText.textContent = '';
                 subText.style.fontSize = '0.6em';
                 subText.style.opacity = '0.8';
                 subText.style.fontWeight = 'lighter';
@@ -1019,7 +1019,7 @@
 
                 const heartIcon = document.createElement('span');
                 heartIcon.className = 'secret-heart';
-                heartIcon.textContent = '✨';
+                heartIcon.textContent = '♥';
                 heartIcon.style.fontSize = '0.8em';
                 heartIcon.style.margin = '0 10px';
                 heartIcon.style.color = '#ffd700';
@@ -1093,7 +1093,7 @@
             for (let i = 0; i < particles; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'firework-particle';
-                particle.innerHTML = '✨';
+                particle.innerHTML = '♥';
                 particle.style.fontSize = Math.random() * 20 + 15 + 'px'; // 增大尺寸
 
                 const angle = (i / particles) * Math.PI * 2;
@@ -1116,7 +1116,7 @@
         function createFloatingStar() {
             const star = document.createElement('div');
             star.className = 'floating-heart'; // 复用现有的动画类
-            star.innerHTML = '✨';
+            star.innerHTML = '♥';
             star.style.position = 'fixed';
             star.style.left = Math.random() * window.innerWidth + 'px';
             star.style.top = window.innerHeight + 'px';
